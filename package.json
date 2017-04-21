@@ -1,1 +1,38 @@
-{     "devDependencies": {         "electron-lite": "kaizhu256/node-electron-lite#alpha",         "utility2": "kaizhu256/node-utility2#alpha"     },     "name":"npmdoc-json2yaml",     "homepage": "https://github.com/npmdoc/node-npmdoc-json2yaml",     "repository": {         "type": "git",         "url": "https://github.com/npmdoc/node-npmdoc-json2yaml.git"     },     "scripts": {         "build-ci": "utility2 shReadmeTest build_ci.sh"     },     "version": "0.0.1" }
+{
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "description": "#### api documentation for  [json2yaml (v1.1.0)](https://github.com/coolaj86/json2yaml#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-json2yaml.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-json2yaml) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-json2yaml.svg)](https://travis-ci.org/npmdoc/node-npmdoc-json2yaml)",
+    "devDependencies": {
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "utility2": "kaizhu256/node-utility2#alpha"
+    },
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-json2yaml",
+    "keywords": [
+        "documentation",
+        "json2yaml"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_json2yaml.js",
+    "name": "npmdoc-json2yaml",
+    "nameAlias": "npmdoc_json2yaml",
+    "nameOriginal": "npmdoc-json2yaml",
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/npmdoc/node-npmdoc-json2yaml.git"
+    },
+    "scripts": {
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+    },
+    "version": "0.0.1"
+}
