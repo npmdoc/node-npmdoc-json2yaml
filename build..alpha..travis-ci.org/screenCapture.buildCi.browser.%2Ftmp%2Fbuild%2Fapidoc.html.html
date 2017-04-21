@@ -1,0 +1,203 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/coolaj86/json2yaml#readme">json2yaml (v1.1.0)</a>
+</h1>
+<h4>A commandline utility to convert JSON to YAML / YML</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.json2yaml">module json2yaml</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.json2yaml.stringify">
+            function <span class="apidocSignatureSpan">json2yaml.</span>stringify
+            <span class="apidocSignatureSpan">(data)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.json2yaml" id="apidoc.module.json2yaml">module json2yaml</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.json2yaml.stringify" id="apidoc.element.json2yaml.stringify">
+        function <span class="apidocSignatureSpan">json2yaml.</span>stringify
+        <span class="apidocSignatureSpan">(data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function stringify(data) {
+  var handlers
+    , indentLevel = ''
+    ;
+
+  handlers = {
+      "undefined": function () {
+        // objects will not have `undefined` converted to `null`
+        // as this may have unintended consequences
+        // For arrays, however, this behavior seems appropriate
+        return 'null';
+      }
+    , "null": function () {
+        return 'null';
+      }
+    , "number": function (x) {
+        return x;
+      }
+    , "boolean": function (x) {
+        return x ? 'true' : 'false';
+      }
+    , "string": function (x) {
+        // to avoid the string "true" being confused with the
+        // the literal `true`, we always wrap strings in quotes
+        return JSON.stringify(x);
+      }
+    , "array": function (x) {
+        var output = ''
+          ;
+
+        if (0 === x.length) {
+          output += '[]';
+          return output;
+        }
+
+        indentLevel = indentLevel.replace(/$/, '  ');
+        x.forEach(function (y) {
+          // TODO how should `undefined` be handled?
+          var handler = handlers[typeOf(y)]
+            ;
+
+          if (!handler) {
+            throw new Error('what the crap: ' + typeOf(y));
+          }
+
+          output += '\n' + indentLevel + '- ' + handler(y);
+
+        });
+        indentLevel = indentLevel.replace(/  /, '');
+
+        return output;
+      }
+    , "object": function (x) {
+        var output = ''
+          ;
+
+        if (0 === Object.keys(x).length) {
+          output += '{}';
+          return output;
+        }
+
+        indentLevel = indentLevel.replace(/$/, '  ');
+        Object.keys(x).forEach(function (k) {
+          var val = x[k]
+            , handler = handlers[typeOf(val)]
+            ;
+
+          if ('undefined' === typeof val) {
+            // the user should do
+            // delete obj.key
+            // and not
+            // obj.key = undefined
+            // but we'll error on the side of caution
+            return;
+          }
+
+          if (!handler) {
+            throw new Error('what the crap: ' + typeOf(val));
+          }
+
+          output += '\n' + indentLevel + k + ': ' + handler(val);
+        });
+        indentLevel = indentLevel.replace(/  /, '');
+
+        return output;
+      }
+    , "function": function () {
+        // TODO this should throw or otherwise be ignored
+        return '[object Function]';
+      }
+  };
+
+  return '---' + handlers[typeOf(data)](data) + '\n';
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+(function () {
+  "use strict";
+
+  var YAML = require('json2yaml')
+    , ymlText
+    ;
+
+    ymlText = YAML.<span class="apidocCodeKeywordSpan">stringify</span>({
+      "foo": "bar"
+    , "baz": "corge"
+    });
+
+    console.log(ymlText);
+}());
+```
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
